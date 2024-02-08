@@ -1,14 +1,76 @@
-let operador ='';
 
-document.getElementById('sumarBtn').addEventListener('click', sumar);
-document.getElementById('restarBtn').addEventListener('click', restar);
-document.getElementById('multiplicarBtn').addEventListener('click', multiplicar);
-document.getElementById('dividirBtn').addEventListener('click', dividir);
-document.getElementById('promedioBtn').addEventListener('click', calcularPromedio);
-document.getElementById('potenciaBtn').addEventListener('click', calcularPotencia);
-document.getElementById('raizBtn').addEventListener('click', calcularRaizCuadrada);
-document.getElementById('menorBtn').addEventListener('click', encontrarNumeroMenor);
-document.getElementById('mayorBtn').addEventListener('click', encontrarNumeroMayor);
+
+function obtenerHistorial() {
+    return JSON.parse(localStorage.getItem('historial')) || [];
+}
+
+
+function mostrarHistorial() {
+    let historial = obtenerHistorial();
+    let historialContainer = document.getElementById("historial-container");
+
+    console.log(historialContainer)
+    historialContainer.innerHTML = '';
+
+
+    
+    historial.forEach((resultado, index) => {
+        let resultadoElement = document.createElement('div');
+        resultadoElement.innerHTML = `${resultado} <button onclick="borrarResultado(${index})">Borrar</button>`;
+        historialContainer.appendChild(resultadoElement);
+    });
+}
+mostrarHistorial()
+
+
+let operador ='';
+document.getElementById('btn0').addEventListener('click', function () {agregarDigito('0')});
+document.getElementById('btn1').addEventListener('click', function () {agregarDigito('1')});
+document.getElementById('btn2').addEventListener('click', function () {agregarDigito('2')});
+document.getElementById('btn3').addEventListener('click', function () {agregarDigito('3')});
+document.getElementById('btn4').addEventListener('click', function () {agregarDigito('4')});
+document.getElementById('btn5').addEventListener('click', function () {agregarDigito('5')});
+document.getElementById('btn6').addEventListener('click', function () {agregarDigito('6')});
+document.getElementById('btn7').addEventListener('click', function () {agregarDigito('7')});
+document.getElementById('btn8').addEventListener('click', function () {agregarDigito('8')});
+document.getElementById('btn9').addEventListener('click', function () {agregarDigito('9')});
+document.getElementById('btn+').addEventListener('click', function () {agregarOperador('+')});                                
+document.getElementById('btn-').addEventListener('click', function () {agregarOperador('-')});                                
+document.getElementById('btn*').addEventListener('click', function () {agregarOperador('*')});                                
+document.getElementById('btn/').addEventListener('click', function () {agregarOperador('/')});                                
+document.getElementById('btn^').addEventListener('click', function () {agregarOperador('^')});                                
+document.getElementById('btn√').addEventListener('click', function () {agregarOperador('√')});                                
+document.getElementById('btnX̄').addEventListener('click', function () {agregarOperador('X̄')});                                
+document.getElementById('btn>').addEventListener('click', function () {agregarOperador('>')});   
+document.getElementById('btn<').addEventListener('click', function () {agregarOperador('<')});
+document.getElementById('btnres').addEventListener('click', function () {calcularResultado('=')});
+document.getElementById('vaciarHistorialBtn').addEventListener('click', function () {
+    vaciarHistorial();
+});
+
+document.getElementById('btnres').addEventListener('click', () => {
+ 
+    const minId = 1;
+    const maxId = 671;
+    const randomId = Math.floor(Math.random() * (maxId - minId + 1)) + minId;
+
+
+    fetch(`https://rickandmortyapi.com/api/character/${randomId}`)
+        .then((response) => response.json())
+        .then((data) => renderCharacters(data))
+        .catch((error) => console.error('Error al obtener el personaje:', error));
+});
+
+function renderCharacters(character) {
+    const characterContainer = document.getElementById('character-container');
+    
+   
+    characterContainer.innerHTML = '';
+
+
+    characterContainer.innerHTML = `<img src="${character.image}" alt="${character.name}">`;
+}                                                                                                      
+
 
 
 function agregarDigito(digito) {
@@ -110,7 +172,7 @@ function sumar() {
     let resultado = num1 + num2;
     mostrarResultado(`${num1} + ${num2} = ${resultado}`);
 
-    guardarResultado(resultado);
+    guardarResultado(`${num1} + ${num2} = ${resultado}`);
 
     mostrarHistorial();
 }
@@ -121,7 +183,7 @@ function restar() {
     let resultado = num1 - num2;
     mostrarResultado(`${num1} - ${num2} = ${resultado}`);
 
-    guardarResultado(resultado);
+    guardarResultado(`${num1} - ${num2} = ${resultado}`);
     mostrarHistorial();
 }
 
@@ -131,7 +193,7 @@ function multiplicar() {
     let resultado = num1 * num2;
     mostrarResultado(`${num1} * ${num2} = ${resultado}`);
 
-    guardarResultado(resultado);
+    guardarResultado(`${num1} * ${num2} = ${resultado}`);
     mostrarHistorial();
 }
 
@@ -141,7 +203,7 @@ function dividir() {
     let resultado = num1 / num2;
     mostrarResultado(`${num1} / ${num2} = ${resultado}`);
 
-    guardarResultado(resultado);
+    guardarResultado(`${num1} / ${num2} = ${resultado}`);
     mostrarHistorial();
 }
 
@@ -150,7 +212,7 @@ function calcularPromedio() {
     let num2 = parseFloat(document.getElementById('num2').value);
     let promedio = (num1 + num2) / 2;
     mostrarResultado(`Promedio de ${num1} y ${num2} = ${promedio}`);
-    guardarResultado(promedio);
+    guardarResultado(`Promedio de ${num1} y ${num2} = ${promedio}`);
     mostrarHistorial();
 }
 
@@ -160,7 +222,7 @@ function calcularPotencia() {
     let resultado = Math.pow(num1, num2);
     mostrarResultado(`${num1} ^ ${num2} = ${resultado}`);
 
-    guardarResultado(resultado);
+    guardarResultado(`${num1} ^ ${num2} = ${resultado}`);
     mostrarHistorial();
 }
 
@@ -169,7 +231,7 @@ function calcularRaizCuadrada() {
     let resultado = Math.sqrt(num1);
     mostrarResultado(`Raíz cuadrada de ${num1} = ${resultado}`);
 
-    guardarResultado(resultado);
+    guardarResultado(`Raíz cuadrada de ${num1} = ${resultado}`);
     mostrarHistorial();
 }
 
@@ -178,7 +240,7 @@ function encontrarNumeroMenor() {
     let num2 = parseFloat(document.getElementById('num2').value);
     let menor = Math.min(num1, num2);
     mostrarResultado(`El número menor entre ${num1} y ${num2} es: ${menor}`);
-    guardarResultado(menor);
+    guardarResultado(`El número menor entre ${num1} y ${num2} es: ${menor}`);
     mostrarHistorial();
 }
 
@@ -187,7 +249,7 @@ function encontrarNumeroMayor() {
     let num2 = parseFloat(document.getElementById('num2').value);
     let mayor = Math.max(num1, num2);
     mostrarResultado(`El número mayor entre ${num1} y ${num2} es: ${mayor}`);
-    guardarResultado(mayor);
+    guardarResultado(`El número mayor entre ${num1} y ${num2} es: ${mayor}`);
     mostrarHistorial();
     
 }
@@ -198,24 +260,7 @@ function vaciarHistorial() {
 }
 
 
-function obtenerHistorial() {
-    return JSON.parse(localStorage.getItem('historial')) || [];
-}
 
-function mostrarHistorial() {
-    let historial = obtenerHistorial();
-    let historialContainer = document.getElementById('historial-container');
-
-    
-    historialContainer.innerHTML = '';
-
-    
-    historial.forEach((resultado, index) => {
-        let resultadoElement = document.createElement('div');
-        resultadoElement.innerHTML = `${resultado} <button onclick="borrarResultado(${index})">Borrar</button>`;
-        historialContainer.appendChild(resultadoElement);
-    });
-}
 
 function borrarResultado(index) {
     let historial = obtenerHistorial();
@@ -227,3 +272,4 @@ function borrarResultado(index) {
         mostrarHistorial(); 
     }
 }
+

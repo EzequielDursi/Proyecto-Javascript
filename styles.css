@@ -1,3 +1,4 @@
+*{ margin: 0}
 #numeric-pad {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -51,4 +52,9 @@ textarea {
     font-family: monospace;
     white-space: pre-line;
     box-sizing: border-box;
+}
+
+#particles-js {
+    
+    background-color :#af575e
 }
